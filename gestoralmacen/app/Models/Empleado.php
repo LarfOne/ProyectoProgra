@@ -9,7 +9,7 @@ class Empleado extends Model
 {
     use HasFactory;
     protected $table = 'empleado';
-    protected $fillable = ['cedula','nombre','apellido1','apellido2','telefono','email', 
+    protected $fillable = ['cedula','nombre','apellido1','apellido2','telefono','email',
     'cuentabancaria','direccion']; //datos modificables
 
     public function factura(){

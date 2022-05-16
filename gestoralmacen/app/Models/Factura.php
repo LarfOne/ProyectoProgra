@@ -11,7 +11,7 @@ class Factura extends Model
     protected $table ='factura';
     protected $fillable=['fechaFactura','subTotal','impuesto','descuento','total','idCliente','idEmpleado'];//los que se pueden modificar
 
-    public function post(){
+    public function detalleFactura(){
         return $this->hasMany('App\Models\DetalleFactura');
     }
 }

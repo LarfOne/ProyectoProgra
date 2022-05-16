@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetalleFactura;
 use Illuminate\Http\Request;
 
+
 class DetalleFacturaController extends Controller
 {
     public function _costruct(){
@@ -38,7 +39,7 @@ class DetalleFacturaController extends Controller
         }
         return response()->json($response['code']);
     }
-   
+
 
     //store -> agrega o guarda un elemento POST
     public function store(Request $request) { //*****************Pendiente**************/
@@ -95,12 +96,12 @@ class DetalleFacturaController extends Controller
         if(!empty($data)){
             $data=array_map('trim',$data);
             $rules=[      //***************************PENDIENTES MAS REGLAS PARA CAMBIOS */
-                'cantidad'=> 'numeric|required',       
+                'cantidad'=> 'numeric|required',
                 'precioUnitario'=>'required|numeric',
                 'descuento'=>'numeric',
                 'subtotal'=>'required|numeric',
                 'idProducto'=>'required',
-                'idFactura'=>'required'  
+                'idFactura'=>'required'
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){
@@ -112,7 +113,7 @@ class DetalleFacturaController extends Controller
                 );
             }else{
                 $codigoDetalle=$data['codigoDetalle'];
-                unset($data['codigoDetalle']);  
+                unset($data['codigoDetalle']);
                 unset($data['created_at']);
                 unset($data['update_at']);
                 $update=Factura::where('codigoDetalle',$codigoDetalle)->update($data);

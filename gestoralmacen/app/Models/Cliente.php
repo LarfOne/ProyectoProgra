@@ -13,10 +13,7 @@ class Cliente extends Model
     protected $fillable = ['nombre','apellido','telefono'];
 
 
-   public function factura(){
-    
+public function factura(){
     return $this->hasMany('App\Models\Factura');
-
-
-   }
+}
 }
