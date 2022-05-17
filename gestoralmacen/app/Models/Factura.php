@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Empleado;
 
 class Factura extends Model
 {
@@ -13,5 +15,9 @@ class Factura extends Model
 
     public function detalleFactura(){
         return $this->hasMany('App\Models\DetalleFactura');
+    }
+
+    public function empleado(){
+        return $this->belongsTo('App\Models\Empleado','idEmpleado');
     }
 }

@@ -21,22 +21,27 @@ class FacturaController extends Controller
         return response()->json($response,200);
     }
     //show ->devuelve uno por su id GET
-    public function show($codigo){
-        $data=Factura::find($codigo)->load('Factura');
-        if(is_object($data)){
-            $response=array(
-                'status'=>'success',
-                'code'=>200,
-                'data'=>$data
-            );
+    public function show($codigo){   
+        if(isset($codigo)){
+            $data=Factura::where('codigo','=', $codigo)->get();
+            if(is_object($data)){
+                //$data=$data::where->load('empleado');
+                //$data=Factura::where('codigo','=', $codigo)->get();
+                $response=array(
+                    'status'=>'success',
+                    'code'=>200,
+                    'data'=>$data
+                );
+            }
         }else{
             $response=array(
                 'status'=>'error',
                 'code'=>404,
-                'data'=>'Recursos no encontrados'
+                'message'=>'Recurso no encontrado'
             );
         }
-        return response()->json($response['code']);
+            return response()->json($response,$response['code']);
+        
     }
    
     //store -> agrega o guarda un elemento POST

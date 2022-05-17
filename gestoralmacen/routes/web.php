@@ -4,6 +4,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\DetalleFacturaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ProductoController;
 //use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,5 @@ Route::prefix('api')->group(function () {
     Route::resource('/factura', FacturaController::class,['except'=>['create','edit']]);
     Route::resource('/detallefactura', DetalleFacturaController::class,['except'=>['create','edit']]);
     Route::resource('/cliente', ClienteController::class,['except'=>['create','edit']]);
+    Route::resource('/producto', ProductoController::class,['except'=>['create','edit']]);
 });

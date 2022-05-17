@@ -23,7 +23,7 @@ class DetalleFacturaController extends Controller
     }
     //show ->devuelve uno por su id GET
     public function show($codigoDetalle){
-        $data=detalleFactura::find($codigoDetalle)->load('detalleFactura');
+        $data=detalleFactura::where('codigoDetalle','=', $codigoDetalle)->load('Producto');
         if(is_object($data)){
             $response=array(
                 'status'=>'success',

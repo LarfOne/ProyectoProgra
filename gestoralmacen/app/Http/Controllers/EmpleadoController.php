@@ -22,9 +22,9 @@ class EmpleadoController extends Controller
         return response()->json($response,200);
     }
     //show--> devuelve un elemento por su id GET
-    public function show($id){
-        if(isset($id)){
-            $data=Empleado::find($id); //->load('posts')//cargar lo que está asociado a este
+    public function show($cedula){
+        if(isset($cedula)){
+            $data=Empleado::where('cedula','=', $cedula)->get(); //->load('posts')//cargar lo que está asociado a este
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',
@@ -51,7 +51,7 @@ class EmpleadoController extends Controller
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
             'cedula'=>'required|numeric|unique:empleado',
             'nombre'=>'required|alpha',
-            'apellido1'=>'required|alpha',
+            'apellido1'=>'required|alpha',  
             'apellido2'=>'required|alpha',
             'telefono'=>'required|numeric',
             'email'=>'required|email|unique:empleado',

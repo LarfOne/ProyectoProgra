@@ -25,21 +25,24 @@ class ProductoController extends Controller
 
     //show ->devuelve uno por su id GET
     public function show($codigo){
-        $data=Producto::find($codigo)->load('Producto');
-        if(is_object($data)){
-            $response=array(
-                'status'=>'success',
-                'code'=>200,
-                'data'=>$data
-            );
+        
+        if(isset($codigo)){
+            $data=Producto::where('codigo','=', $codigo)->get(); //->load('posts')//cargar lo que está asociado a este
+            if(is_object($data)){
+                $response=array(
+                    'status'=>'success',
+                    'code'=>200,
+                    'data'=>$data
+                );
+            }
         }else{
             $response=array(
                 'status'=>'error',
                 'code'=>404,
-                'data'=>'Recursos no encontrados'
+                'message'=>'Producto no encontrado'
             );
         }
-        return response()->json($response['code']);
+        return response()->json($response,$response['code']);
     }
 
     //store -> agrega o guarda un elemento POST
@@ -48,8 +51,8 @@ class ProductoController extends Controller
         $data=json_decode($json,true);
         $data=array_map('trim',$data);
         $rules=[
-            'descripcion'=>'alpha',
-            'precio'=>'numeric',  
+            'descripcion'=>'required|alpha',
+            'precio'=>'required|numeric',  
         ];
         
         $valid=\validator($data,$rules);
