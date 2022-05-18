@@ -11,7 +11,7 @@ class Producto extends Model
     protected $table='producto';
     protected $fillable=['descripcion', 'precio'];
 
-    public function inventarios(){ 
-        return $this->hasMany('App\Models\Inventario');
+    public function detallefactura(){ 
+        return $this->hasMany('App\Models\DetalleFactura');
     }
 }

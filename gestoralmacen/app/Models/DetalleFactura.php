@@ -12,9 +12,10 @@ class DetalleFactura extends Model
     protected $fillable=['cantidad','precioUnitario','descuento','subTotal','idProducto','idFactura']; //pendiente
     
     public function producto(){
-        return $this->belongsTo('App\Models\Producto','idProducto');
+        return $this->belongsTo('App\Models\Producto','producto_id');
     }
+
     public function factura(){
-        return $this->belongsTo('App\Models\Factura','idFactura');
+        return $this->belongsTo('App\Models\Factura','factura_id');
     }
 }

@@ -24,7 +24,8 @@ class EmpleadoController extends Controller
     //show--> devuelve un elemento por su id GET
     public function show($cedula){
         if(isset($cedula)){
-            $data=Empleado::where('cedula','=', $cedula)->get(); //->load('posts')//cargar lo que está asociado a este
+            $data=Empleado::find($cedula)->load('factura');
+           //$data=Empleado::where('cedula','=', $cedula)->get(); //->load('posts')//cargar lo que está asociado a este
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',

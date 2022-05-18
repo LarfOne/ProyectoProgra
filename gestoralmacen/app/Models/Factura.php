@@ -16,8 +16,13 @@ class Factura extends Model
     public function detalleFactura(){
         return $this->hasMany('App\Models\DetalleFactura');
     }
+    
+
 
     public function empleado(){
-        return $this->belongsTo('App\Models\Empleado','idEmpleado');
+        return $this->belongsTo('App\Models\Empleado','empleado_id');
     }
+
+
+
 }

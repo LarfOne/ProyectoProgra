@@ -23,10 +23,8 @@ class FacturaController extends Controller
     //show ->devuelve uno por su id GET
     public function show($codigo){   
         if(isset($codigo)){
-            $data=Factura::where('codigo','=', $codigo)->get();
+            $data=Factura::find($codigo)->load('empleado', 'detalleFactura');
             if(is_object($data)){
-                //$data=$data::where->load('empleado');
-                //$data=Factura::where('codigo','=', $codigo)->get();
                 $response=array(
                     'status'=>'success',
                     'code'=>200,
