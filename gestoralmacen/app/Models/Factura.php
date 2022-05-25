@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Empleado;
+use App\Models\Cliente;
 
 class Factura extends Model
 {
@@ -17,7 +18,9 @@ class Factura extends Model
         return $this->hasMany('App\Models\DetalleFactura');
     }
     
-
+    public function cliente(){
+        return $this->belongsTo('App\Models\Cliente','cliente_id');
+    }
 
     public function empleado(){
         return $this->belongsTo('App\Models\Empleado','empleado_id');

@@ -27,7 +27,7 @@ class ClienteController extends Controller
     //show--> devuelve un elemento por su id GET
     public function show($id){
         if(isset($id)){
-            $data=Cliente::find($id); //->load('posts')//cargar lo que está asociado a este
+            $data=Cliente::find($id)->load('factura'); //->load('posts')//cargar lo que está asociado a este
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',

@@ -23,7 +23,7 @@ class FacturaController extends Controller
     //show ->devuelve uno por su id GET
     public function show($codigo){   
         if(isset($codigo)){
-            $data=Factura::find($codigo)->load('empleado', 'detalleFactura');
+            $data=Factura::find($codigo)->load('empleado', 'cliente', 'detalleFactura');
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',
@@ -43,7 +43,7 @@ class FacturaController extends Controller
     }
    
     //store -> agrega o guarda un elemento POST
-    public function store(Request $request) { //*****************Pendiente**************/
+    public function store(Request $request) { 
         $json=$request->input('json',null);
         $data=json_decode($json,true);
         $data=array_map('trim',$data);

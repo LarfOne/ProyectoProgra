@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Helpers\JwtAuth;
 
 class EmpleadoController extends Controller
 {
@@ -50,10 +52,12 @@ class EmpleadoController extends Controller
         var_dump($json);//perimte ver internamente en postman el arreglo que estoy enviando
         $data=array_map('trim',$data);
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
-            'cedula'=>'required|numeric|unique:empleado',
+            'id'=>'required|numeric|unique:empleado',
             'nombre'=>'required|alpha',
             'apellido1'=>'required|alpha',  
             'apellido2'=>'required|alpha',
+            'role'=>'required|alpha',
+            'contrasena'=>'required',
             'telefono'=>'required|numeric',
             'email'=>'required|email|unique:empleado',
             'cuentabancaria'=>'required|unique:empleado',
@@ -69,10 +73,12 @@ class EmpleadoController extends Controller
                 );
         }else{
             $empleado=new Empleado();  // imagen se edita no se agrega de un solo
-            $empleado->cedula=$data['cedula'];
+            $empleado->id=$data['id'];
             $empleado->nombre=$data['nombre'];
             $empleado->apellido1=$data['apellido1'];
             $empleado->apellido2=$data['apellido2'];
+            $empleado->role=$data['role'];
+            $empleado->contrasena=hash('sha256',$data['contrasena']);
             $empleado->telefono=$data['telefono'];
             $empleado->email=$data['email'];
             $empleado->cuentabancaria=$data['cuentabancaria'];
@@ -166,4 +172,40 @@ class EmpleadoController extends Controller
         }
         return response()->json($response,$response['code']);
     }
+        /** Funciona a traves de metodo POST retornando un token */
+        public function login(Request $request){
+            $jwtAuth=new JwtAuth();
+            $json=$request->input('json',null);
+            $data=json_decode($json,true);
+            $data=array_map('trim',$data);
+            $rules=['id'=>'required','contrasena'=>'required'];
+            $valid=\validator($data,$rules);
+            if($valid->fails()){
+                $response=array(
+                    'status'=>'error',
+                    'code'=>406,
+                    'message'=>'Los datos enviados son incorrectos',
+                    'errors'=>$valid->errors()
+                );
+                return response()->json($response,406);
+            }else{
+                $response=$jwtAuth->getToken($data['id'],$data['contrasena']);
+                return response()->json($response);
+            }
+        }
+        /** Funciona a traves de metodo POST retorna un json de datos del usuario autenticado */
+        public function getIdentity(Request $request){
+            $jwtAuth=new JwtAuth();
+            $token=$request->header('token');
+            if(isset($token)){
+                $response=$jwtAuth->checkToken($token,true);
+            }else{
+                $response=array(
+                    'status'=>'error',
+                    'code'=>406,
+                    'message'=>'token no encontrado'
+                );
+            }
+            return response()->json($response);
+        }
 }
