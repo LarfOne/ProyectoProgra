@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('api')->group(function () {
     //RUTAS ESPECIFICAS imagenes
     Route::post('/empleado/login',[EmpleadoController::class,'login']);
+    Route::get('/empleado/getIdentity',[EmpleadoController::class,'getIdentity']);
+
     //Route::post('/user/upload',[UserController::class,'uploadImage']);
     //Route::get('/user/getimage/{filename}',[UserController::class,'getImage']);
     //RUTAS AUTOMATICAS RESTful

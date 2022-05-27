@@ -8,15 +8,13 @@ use App\Models\Empleado;
 class JwtAuth{
     private $key;
 
-    function _construct()
+    function __construct()
     {
         $this->key='12Sawsfe2saWaaasawSQ';
     }
 
     
     public function getToken($id, $contrasena){
-        //$id1 = 3;
-       //$contrasena2 = 1234;
         $empleado=Empleado::where(['id'=>$id,'contrasena'=>hash('sha256',$contrasena)])->first();
         if(is_object($empleado)){
             $token=array(
@@ -32,6 +30,7 @@ class JwtAuth{
                 'iat'=>time(),
                 'exp'=>time()+(28800)//8 horas 28800
             );
+            var_dump($token);
             $data=JWT::encode($token,$this->key,'HS256');
         }else{
             $data=array(

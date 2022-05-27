@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\Empleado as Authenticatable;
 
 class Empleado extends Model
 {
+
+    
+
     use HasFactory;
     protected $table = 'empleado';
     protected $fillable = ['id','nombre','apellido1','apellido2','role','contrasena',

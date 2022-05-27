@@ -24,9 +24,9 @@ class EmpleadoController extends Controller
         return response()->json($response,200);
     }
     //show--> devuelve un elemento por su id GET
-    public function show($cedula){
-        if(isset($cedula)){
-            $data=Empleado::find($cedula)->load('factura');
+    public function show($id){
+        if(isset($id)){
+            $data=Empleado::find($id)->load('factura');
            //$data=Empleado::where('cedula','=', $cedula)->get(); //->load('posts')//cargar lo que está asociado a este
             if(is_object($data)){
                 $response=array(
@@ -72,7 +72,7 @@ class EmpleadoController extends Controller
                 ''=>$valid->errors()
                 );
         }else{
-            $empleado=new Empleado();  // imagen se edita no se agrega de un solo
+            $empleado=new Empleado();
             $empleado->id=$data['id'];
             $empleado->nombre=$data['nombre'];
             $empleado->apellido1=$data['apellido1'];
@@ -100,14 +100,15 @@ class EmpleadoController extends Controller
         $data=json_decode($json,true);
         if(!empty($data)){
             $data=array_map('trim',$data);
+            //$data->contrasena= hash('sha256',$data['contrasena']);
             $rules=[
-                'nombre'=>'required|alpha',
-                'apellido1'=>'required|alpha',
-                'apellido2'=>'required|alpha',
-                'telefono'=>'required',
-                'email'=>'required|email',
-                'cuentabancaria'=>'required',
-                'direccion'=>'required'
+                'nombre'=>'alpha',
+                'apellido1'=>'alpha',
+                'apellido2'=>'alpha',
+                'telefono'=>'numeric|unique:empleado',
+                'email'=>'email|unique:empleado',
+                'role'=>'alpha',
+                'cuentabancaria'=>'unique:empleado',
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){
@@ -118,10 +119,11 @@ class EmpleadoController extends Controller
                     'errors'=>$validate->errors()
                 );
             }else{
-                $id=$data['cedula'];
-                unset($data['cedula']);        //Unset: atributos que no se modifican
+               
+                $id=$data['id'];
+                unset($data['id']);        //Unset: atributos que no se modifican
                 unset($data['created_at']);
-                $updated=Empleado::where('cedula',$id)->update($data);
+                $updated=Empleado::where('id',$id)->update($data); 
                 if($updated>0){
                     $response=array(
                         'status'=>'success',
@@ -149,7 +151,7 @@ class EmpleadoController extends Controller
     //destroy --> Elimina un elemento   DELETE
     public function destroy($id){
         if(isset($id)){
-            $deleted=Empleado::where('cedula',$id)->delete();
+            $deleted=Empleado::where('id',$id)->delete();
             if($deleted){
                 $response=array(
                     'status'=>'success',

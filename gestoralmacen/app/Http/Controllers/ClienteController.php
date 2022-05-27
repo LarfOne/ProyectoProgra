@@ -46,9 +46,6 @@ class ClienteController extends Controller
     }
 
 
-
-
-
     //store --> agrega o guarda un elemnto  POST
     public function store(Request $request){   //PENDIENTE CAPTURA DE ERROR AL EENVIAR EL MISMO USUARIO O ENVIAR NADA
         $json=$request->input('json',null,true);
@@ -56,7 +53,7 @@ class ClienteController extends Controller
         var_dump($json);//perimte ver internamente en postman el arreglo que estoy enviando
         $data=array_map('trim',$data);
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
-            'cedula'=>'required|unique:cliente',
+            'id'=>'required|unique:cliente',
             'nombre'=>'required|alpha',
             'apellido'=>'required|alpha',
             'telefono'=>'numeric|unique:cliente',//no tienen requirido por que aveces los clientes no quieren dejar sus datos
@@ -73,7 +70,7 @@ class ClienteController extends Controller
         }else{
 
             $cliente=new Cliente();  // imagen se edita no se agrega de un solo
-            $cliente->cedula=$data['cedula'];
+            $cliente->id=$data['id'];
             $cliente->nombre=$data['nombre'];
             $cliente->apellido=$data['apellido'];
             $cliente->telefono=$data['telefono'];
@@ -110,10 +107,10 @@ class ClienteController extends Controller
                     'errors'=>$validate->errors()
                 );
             }else{
-                $id=$data['cedula'];
-                unset($data['cedula']);        //Unset: atributos que no se modifican
+                $id=$data['id'];
+                unset($data['id']);        //Unset: atributos que no se modifican
                 unset($data['created_at']);
-                $updated=Cliente::where('cedula',$id)->update($data);
+                $updated=Cliente::where('id',$id)->update($data);
                 if($updated>0){
                     $response=array(
                         'status'=>'success',
@@ -141,7 +138,7 @@ class ClienteController extends Controller
     //destroy --> Elimina un elemento   DELETE
     public function destroy($id){
         if(isset($id)){
-            $deleted=Cliente::where('cedula',$id)->delete();
+            $deleted=Cliente::where('id',$id)->delete();
             if($deleted){
                 $response=array(
                     'status'=>'success',
