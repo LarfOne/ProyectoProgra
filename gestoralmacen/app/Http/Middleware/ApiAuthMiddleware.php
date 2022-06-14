@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Helpers\JwtAuth;
 
 class ApiAuthMiddleware
 {
@@ -16,6 +17,18 @@ class ApiAuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        $jwtAuth = new JwtAuth();
+        $token=$request->header('token');
+        $logged=$jwtAuth->checkToken($token);
+        if($logged){
+            return $next($request);
+        }else{
+            $response=array(
+                'status'=>'error',
+                'code'=>401,
+                'message'=>'No tiene privilegios para acceder a este recurso'
+            );
+            return response()->json($response,401);
+        }
     }
 }

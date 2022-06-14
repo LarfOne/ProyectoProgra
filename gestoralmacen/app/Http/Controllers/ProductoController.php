@@ -24,10 +24,10 @@ class ProductoController extends Controller
     }
 
     //show ->devuelve uno por su id GET
-    public function show($codigo){
+    public function show($id){
         
-        if(isset($codigo)){
-            $data=Producto::where('codigo','=', $codigo)->get(); //->load('posts')//cargar lo que está asociado a este
+        if(isset($id)){
+            $data=Producto::where('id','=', $id)->get(); //->load('posts')//cargar lo que está asociado a este
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',
@@ -97,12 +97,12 @@ class ProductoController extends Controller
                 'errors'=>$valid->errors()
             );
         }else{                    //ignorar
-            $codigo=$data['codigo'];   // valor a validar con base de datos
-            unset($data['codigo']);
+            $id=$data['id'];   // valor a validar con base de datos
+            unset($data['id']);
             unset($data['descripcion']);
             unset($data['precio']);
             
-            $updated=User::where('codigo',$codigo)->update($data);
+            $updated=User::where('id',$id)->update($data);
             if($updated>0){
                 $response=array(
                     'status'=>'success',
@@ -121,9 +121,9 @@ class ProductoController extends Controller
     }
 
     //destroy -> elimina un elemento DELETE
-    public function destroy($codigo){
-        if(isset($codigo)){ //isset esta la variable creada?
-            $deleted = Producto::where('id',$codigo)->delete();
+    public function destroy($id){
+        if(isset($id)){ //isset esta la variable creada?
+            $deleted = Producto::where('id',$id)->delete();
             if($deleted){
                 $response=array(
                     'status' => 'succes',

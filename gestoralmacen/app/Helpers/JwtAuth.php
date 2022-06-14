@@ -13,35 +13,31 @@ class JwtAuth{
         $this->key='12Sawsfe2saWaaasawSQ';
     }
 
-    
     public function getToken($id, $contrasena){
-        $empleado=Empleado::where(['id'=>$id,'contrasena'=>hash('sha256',$contrasena)])->first();
-        if(is_object($empleado)){
-            $token=array(
+        $empleado = Empleado::where(['id'=>$id, 'contrasena'=>hash('sha256', $contrasena)])->first();
+        if(is_object($empleado )){
+            $token = array(
                 'sub'=>$empleado->id,
-                'name'=>$empleado->nombre,
-                'apellido1'=>$empleado->apellido1,
-                'apellido2'=>$empleado->apellido2,
-                'telefono'=>$empleado->telefono, 
-                'role'=>$empleado->role,    
                 'email'=>$empleado->email,
-                'cuentaBancaria'=>$empleado->cuentaBancaria, 
-                'direccion'=>$empleado->direccion,         
+                //'name'=>$user->name,
+                //'last_name'=>$user->last_name,
+                'role'=>$empleado->role,
                 'iat'=>time(),
-                'exp'=>time()+(28800)//8 horas 28800
+                'exp'=>time()+(120)
             );
-            var_dump($token);
-            $data=JWT::encode($token,$this->key,'HS256');
-        }else{
-            $data=array(
-                'status'=>'error',
-                'code'=>401,
-                'message'=>'Datos de autenticación incorrectos'
+            $data = JWT::encode($token, $this->key, 'HS256');
+        } else{
+            $data = array(
+                'status' => 'error',
+                'code' => 401,
+                'message' => 'Datos de autenticacion incorrectos'
             );
         }
+
         return $data;
     }
-    
+
+
     public function checkToken($jwt,$getIdentity=false){
         $auth=false;
         if(isset($jwt)){

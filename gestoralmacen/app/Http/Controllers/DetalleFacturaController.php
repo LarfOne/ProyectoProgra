@@ -22,8 +22,8 @@ class DetalleFacturaController extends Controller
         return response()->json($response,200);
     }
     //show ->devuelve uno por su id GET
-    public function show($codigoDetalle){
-        $data=detalleFactura::where('codigoDetalle','=', $codigoDetalle)->load('Producto');
+    public function show($id){
+        $data=detalleFactura::where('id','=', $id)->load('Producto');
         if(is_object($data)){
             $response=array(
                 'status'=>'success',
@@ -112,11 +112,11 @@ class DetalleFacturaController extends Controller
                     'errors' =>$validate->errors() //devuelve todos los fallos  que surgieron
                 );
             }else{
-                $codigoDetalle=$data['codigoDetalle'];
-                unset($data['codigoDetalle']);
+                $id=$data['id'];
+                unset($data['id']);
                 unset($data['created_at']);
                 unset($data['update_at']);
-                $update=Factura::where('codigoDetalle',$codigoDetalle)->update($data);
+                $update=Factura::where('id',$id)->update($data);
                 if($update>0){
                     $response=array(
                         'status' => 'success',
@@ -141,9 +141,9 @@ class DetalleFacturaController extends Controller
         return response()->json($response,$response['code']);
     }
     //destroy -> elimina un elemento DELETE
-    public function destroy($codigoDetalle){
+    public function destroy($id){
         if(isset($id)){ //isset esta la varible creada?
-            $deleted = detalleFactura::where('codigoDetalle',$codigoDetalle)->delete();
+            $deleted = detalleFactura::where('id',$id)->delete();
             if($deleted){
                 $response=array(
                     'status' => 'succes',

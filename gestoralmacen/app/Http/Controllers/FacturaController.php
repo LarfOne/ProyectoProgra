@@ -21,9 +21,9 @@ class FacturaController extends Controller
         return response()->json($response,200);
     }
     //show ->devuelve uno por su id GET
-    public function show($codigo){   
-        if(isset($codigo)){
-            $data=Factura::find($codigo)->load('empleado', 'cliente', 'detalleFactura');
+    public function show($id){   
+        if(isset($id)){
+            $data=Factura::find($id)->load('empleado', 'cliente', 'detalleFactura');
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',
@@ -52,8 +52,8 @@ class FacturaController extends Controller
             'subtotal'=>'required|numeric',
             'descuento'=>'numeric',
             'total'=>'numeric',
-            'idCliente'=>'required',
-            'idEmpleado'=>'required'    
+            'cliente_id'=>'required',
+            'empleado_id'=>'required'    
         ];
         
         $valid=\validator($data,$rules);
@@ -70,8 +70,8 @@ class FacturaController extends Controller
             $factura->impuesto=$data['impuesto'];
             $factura->descuento=$data['descuento'];
             $factura->total=$data['total'];
-            $factura->idCliente=$data['idCliente'];
-            $factura->idEmplado=$data['idEmpleado'];
+            $factura->idCliente=$data['cliente_id'];
+            $factura->idEmplado=$data['empleado_id'];
             $factura->save();
             $response=array(
                 'status'=>'success',
@@ -91,12 +91,11 @@ class FacturaController extends Controller
         $data=array_map('trim',$data);
         $rules=[
             'impuesto'=> 'numeric',
-            'subtotal'=>'required|numeric',
-            'fechaFactura'=>'required',
+            'subtotal'=>'numeric',
             'descuento'=>'numeric',
             'total'=>'numeric',
-            'idCliente'=>'required',
-            'idEmpleado'=>'required'    
+            'cliente_id'=>'numeric',
+            'empleado_id'=>'numeric'    
         ];
         $valid=\validator($data,$rules);
         if($valid->fails()){
@@ -107,13 +106,13 @@ class FacturaController extends Controller
                 'errors'=>$valid->errors()
             );
         }else{                    //ignorar
-            $codigo=$data['codigo'];   // valor a validar con base de datos
-            unset($data['codigo']);
-            unset($data['idCliente']);
-            unset($data['idEmpleado']);
+            $id=$data['id'];   // valor a validar con base de datos
+            unset($data['id']);
+            unset($data['cliente_id']);
+            unset($data['empleado_id']);
             unset($data['created_at']);
             unset($data['updated_at']);
-            $updated=User::where('codigo',$codigo)->update($data);
+            $updated=User::where('id',$id)->update($data);
             if($updated>0){
                 $response=array(
                     'status'=>'success',
@@ -136,9 +135,9 @@ class FacturaController extends Controller
 
 
     //destroy -> elimina un elemento DELETE
-    public function destroy($codigo){
-        if(isset($codigo)){ //isset esta la varible creada?
-            $deleted = Factura::where('id',$codigo)->delete();
+    public function destroy($id){
+        if(isset($id)){ //isset esta la varible creada?
+            $deleted = Factura::where('id',$id)->delete();
             if($deleted){
                 $response=array(
                     'status' => 'succes',
