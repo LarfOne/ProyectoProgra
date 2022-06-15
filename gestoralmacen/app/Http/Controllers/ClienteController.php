@@ -96,7 +96,7 @@ class ClienteController extends Controller
             'nombre'=>'alpha',
             'apellido'=>'alpha',
             'telefono'=>'numeric|unique:cliente',//no tienen requirido por que aveces los clientes no quieren dejar sus datos
-            'email'=>'email'
+            'email'=>'email|unique:cliente'
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){

@@ -11,6 +11,7 @@ class EmpleadoController extends Controller
 {
     public function __construct()
     {
+        //$this->middleware('api.auth',['except'=>['show','login','store','getImage']]);
         // Inyectar meddleware
     }
     //index -->devuelve todos los elementos  GET
@@ -54,7 +55,7 @@ class EmpleadoController extends Controller
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
             'id'=>'required|numeric|unique:empleado',
             'nombre'=>'required|alpha',
-            'apellido1'=>'required|alpha',  
+            'apellido1'=>'required|alpha',
             'apellido2'=>'required|alpha',
             'role'=>'required|alpha',
             'contrasena'=>'required',
@@ -119,11 +120,11 @@ class EmpleadoController extends Controller
                     'errors'=>$validate->errors()
                 );
             }else{
-               
+
                 $id=$data['id'];
                 unset($data['id']);        //Unset: atributos que no se modifican
                 unset($data['created_at']);
-                $updated=Empleado::where('id',$id)->update($data); 
+                $updated=Empleado::where('id',$id)->update($data);
                 if($updated>0){
                     $response=array(
                         'status'=>'success',
@@ -176,22 +177,25 @@ class EmpleadoController extends Controller
     }
         /** Funciona a traves de metodo POST retornando un token */
         public function login(Request $request){
-            $jwtAuth=new JwtAuth();
-            $json=$request->input('json',null);
-            $data=json_decode($json,true);
-            $data=array_map('trim',$data);
-            $rules=['id'=>'required','contrasena'=>'required'];
-            $valid=\validator($data,$rules);
+            $jwtAuth = new JwtAuth();
+            $json = $request->input('json', null);
+            $data = json_decode($json, true);
+            $data = array_map('trim', $data);
+            $rules = [
+                'id'=>'required',
+                'contrasena'=>'required'
+            ];
+            $valid=\validator($data, $rules);
             if($valid->fails()){
-                $response=array(
-                    'status'=>'error',
-                    'code'=>406,
-                    'message'=>'Los datos enviados son incorrectos',
-                    'errors'=>$valid->errors()
+                $response = array(
+                    'status' => 'error',
+                    'code' => 406,
+                    'message' => 'Los datos enviados son incorrectos',
+                    'Validator errors' => $valid->errors()
                 );
-                return response()->json($response,406);
-            }else{
-                $response=$jwtAuth->getToken($data['id'],$data['contrasena']);
+                return response()->json($data, 406);
+            } else{
+                $response = $jwtAuth->getToken($data['id'], $data['contrasena']);
                 return response()->json($response);
             }
         }
@@ -210,4 +214,46 @@ class EmpleadoController extends Controller
             }
             return response()->json($response);
         }
+
+        public function uploadImage(Request $request){
+            $image=$request->file('file0');
+            $valid=\Validator::make($request->all(),[
+                'file0'=>'required|image|mimes:jpg,png'
+            ]);
+            if(!$image||$valid->fails()){
+                $response=array(
+                    'status'=>'error',
+                    'code'=>406,
+                    'message'=>'Error al subir el archivo',
+                    'errors'=>$valid->errors()
+                );
+            }else{
+                $filename=time().$image->getClientOriginalName();
+                \Storage::disk('empleados')->put($filename,\File::get($image));
+                $response=array(
+                    'status'=>'success',
+                    'code'=>200,
+                    'message'=>'Imagen guardada correctamente',
+                    'image_name'=>$filename
+                );
+            }
+            return response()->json($response,$response['code']);
+        }
+
+        public function getImage($filename){
+            $exist=\Storage::disk('empleados')->exists($filename);
+            if($exist){
+                $file=\Storage::disk('empleados')->get($filename);
+                return new Response($file,200);
+            }else{
+                $response=array(
+                    'status'=>'error',
+                    'code'=>404,
+                    'message'=>'Imagen no existe'
+                );
+                return response()->json($response,404);
+            }
+        }
+
+
 }
