@@ -11,7 +11,7 @@ class EmpleadoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('api.auth',['except'=>['show','login','store','getImage']]);
+     //   $this->middleware('api.auth',['except'=>['show','login','store','getImage']]);
         // Inyectar meddleware
     }
     //index -->devuelve todos los elementos  GET
