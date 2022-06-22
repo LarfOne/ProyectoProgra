@@ -46,6 +46,32 @@ class EmpleadoController extends Controller
         return response()->json($response,$response['code']);
     }
 
+
+    public function mostrarFacturasEmpleado($id)
+    {
+        $empleado = Empleado::find($id);
+        if (is_object($empleado)) {
+            $empleado = Empleado::find($id);
+            $empleado = $empleado->load('factura');
+
+            $response = array(
+                'status' => 'success',
+                'code' => 200,
+                'data' => $empleado
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'Empleado no encontrado'
+            );
+        }
+        return response()->json($response, $response['code']);
+    }
+
+
+
+
     //store --> agrega o guarda un elemnto  POST
     public function store(Request $request){   //PENDIENTE CAPTURA DE ERROR AL EENVIAR EL MISMO USUARIO O ENVIAR NADA
         $json=$request->input('json',null,true);

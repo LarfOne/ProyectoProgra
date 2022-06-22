@@ -21,4 +21,6 @@ Route::prefix('api')->group(function () {
     Route::resource('/detallefactura', DetalleFacturaController::class,['except'=>['create','edit']]);
     Route::resource('/cliente', ClienteController::class,['except'=>['create','edit']]);
     Route::resource('/producto', ProductoController::class,['except'=>['create','edit']]);
+    Route::get('/empleado/mostrarFacturasEmpleado/{idEmpleado}', [EmpleadoController::class, 'mostrarFacturasEmpleado']);
+    //muestra facturas de un empleado
 });
