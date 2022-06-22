@@ -132,10 +132,9 @@ class EmpleadoController extends Controller
                 'nombre'=>'alpha',
                 'apellido1'=>'alpha',
                 'apellido2'=>'alpha',
-                'telefono'=>'numeric|unique:empleado',
-                'email'=>'email|unique:empleado',
-                'role'=>'alpha',
-                'cuentabancaria'=>'unique:empleado',
+                'telefono'=>'numeric',
+                'email'=>'email',
+                'role'=>'alpha'
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){
@@ -240,4 +239,45 @@ class EmpleadoController extends Controller
             }
             return response()->json($response);
         }
+
+        public function uploadImage(Request $request){
+            $image=$request->file('file0');
+            $valid=\Validator::make($request->all(),[
+                'file0'=>'required|image|mimes:jpg,png'
+            ]);
+            if(!$image||$valid->fails()){
+                $response=array(
+                    'status'=>'error',
+                    'code'=>406,
+                    'message'=>'Error al subir el archivo',
+                    'errors'=>$valid->errors()
+                );
+            }else{
+                $filename=time().$image->getClientOriginalName();
+                \Storage::disk('empleados')->put($filename,\File::get($image));
+                $response=array(
+                    'status'=>'success',
+                    'code'=>200,
+                    'message'=>'Imagen guardada correctamente',
+                    'image_name'=>$filename
+                );
+            }
+            return response()->json($response,$response['code']);
+        }
+
+        public function getImage($filename){
+            $exist=\Storage::disk('empleados')->exists($filename);
+            if($exist){
+                $file=\Storage::disk('empleados')->get($filename);
+                return new Response($file,200);
+            }else{
+                $response=array(
+                    'status'=>'error',
+                    'code'=>404,
+                    'message'=>'Imagen no existe'
+                );
+                return response()->json($response,404);
+            }
+}
+
 }
