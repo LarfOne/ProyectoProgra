@@ -121,6 +121,8 @@ class EmpleadoController extends Controller
         return response()->json($response,$response['code']);
     }
     //*********************Hasta aqui **************************/
+    
+    
     //update --> modifica un elemento    PUT
     public function update(Request $request){
         $json=$request->input('json',null);

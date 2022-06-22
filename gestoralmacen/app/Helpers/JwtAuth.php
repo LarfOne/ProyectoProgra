@@ -22,7 +22,11 @@ class JwtAuth{
                 'nombre'=>$empleado->nombre,
                 'apellido1'=>$empleado->apellido1,
                 'apellido2'=>$empleado->apellido2,
+                'telefono'=>$empleado->telefono,
+                'direccion'=>$empleado->direccion,
                 'role'=>$empleado->role,
+                'cuentabancaria'=>$empleado->cuentabancaria,
+                'image'=>$empleado->image,
                 'iat'=>time(),
                 'exp'=>time()+(120)
             );

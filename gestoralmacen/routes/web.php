@@ -13,8 +13,8 @@ Route::prefix('api')->group(function () {
     Route::post('/empleado/login',[EmpleadoController::class,'login']);
     Route::get('/empleado/getidentity',[EmpleadoController::class,'getIdentity']);
 
-    Route::post('/user/upload',[EmpleadoController::class,'uploadImage']);
-    Route::get('/user/getimage/{filename}',[EmpleadoController::class,'getImage']);
+    Route::post('/empleado/upload',[EmpleadoController::class,'uploadImage']);
+    Route::get('/empleado/getimage/{filename}',[EmpleadoController::class,'getImage']);
     //RUTAS AUTOMATICAS RESTful
     Route::resource('/empleado', EmpleadoController::class,['except'=>['create','edit']]);
     Route::resource('/factura', FacturaController::class,['except'=>['create','edit']]);
