@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('api')->group(function () {
     //RUTAS ESPECIFICAS imagenes
     Route::post('/empleado/login',[EmpleadoController::class,'login']);
-    Route::get('/empleado/getIdentity',[EmpleadoController::class,'getIdentity']);
+    Route::get('/empleado/getidentity',[EmpleadoController::class,'getIdentity']);
 
     Route::post('/empleado/upload',[EmpleadoController::class,'uploadImage']);
     Route::get('/empleado/getimage/{filename}',[EmpleadoController::class,'getImage']);
@@ -21,4 +21,6 @@ Route::prefix('api')->group(function () {
     Route::resource('/detallefactura', DetalleFacturaController::class,['except'=>['create','edit']]);
     Route::resource('/cliente', ClienteController::class,['except'=>['create','edit']]);
     Route::resource('/producto', ProductoController::class,['except'=>['create','edit']]);
+    Route::get('/empleado/mostrarFacturasEmpleado/{idEmpleado}', [EmpleadoController::class, 'mostrarFacturasEmpleado']);
+    //muestra facturas de un empleado
 });

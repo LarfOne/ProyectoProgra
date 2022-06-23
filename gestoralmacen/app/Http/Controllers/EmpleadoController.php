@@ -11,7 +11,7 @@ class EmpleadoController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('api.auth',['except'=>['show','login','store','getImage']]);
+     //   $this->middleware('api.auth',['except'=>['show','login','store','getImage']]);
         // Inyectar meddleware
     }
     //index -->devuelve todos los elementos  GET
@@ -46,11 +46,37 @@ class EmpleadoController extends Controller
         return response()->json($response,$response['code']);
     }
 
+
+    public function mostrarFacturasEmpleado($id)
+    {
+        $empleado = Empleado::find($id);
+        if (is_object($empleado)) {
+            $empleado = Empleado::find($id);
+            $empleado = $empleado->load('factura');
+
+            $response = array(
+                'status' => 'success',
+                'code' => 200,
+                'data' => $empleado
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'Empleado no encontrado'
+            );
+        }
+        return response()->json($response, $response['code']);
+    }
+
+
+
+
     //store --> agrega o guarda un elemnto  POST
     public function store(Request $request){   //PENDIENTE CAPTURA DE ERROR AL EENVIAR EL MISMO USUARIO O ENVIAR NADA
-        $json=$request->input('json',null,true);
+        $json=$request->input('json',null);
         $data=json_decode($json,true);
-        var_dump($json);//perimte ver internamente en postman el arreglo que estoy enviando
+        //var_dump($json);//perimte ver internamente en postman el arreglo que estoy enviando
         $data=array_map('trim',$data);
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
             'id'=>'required|numeric|unique:empleado',
@@ -95,6 +121,8 @@ class EmpleadoController extends Controller
         return response()->json($response,$response['code']);
     }
     //*********************Hasta aqui **************************/
+
+
     //update --> modifica un elemento    PUT
     public function update(Request $request){
         $json=$request->input('json',null);
@@ -106,10 +134,9 @@ class EmpleadoController extends Controller
                 'nombre'=>'alpha',
                 'apellido1'=>'alpha',
                 'apellido2'=>'alpha',
-                'telefono'=>'numeric|unique:empleado',
-                'email'=>'email|unique:empleado',
-                'role'=>'alpha',
-                'cuentabancaria'=>'unique:empleado',
+                'telefono'=>'numeric',
+                'email'=>'email',
+                'role'=>'alpha'
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){
@@ -253,7 +280,6 @@ class EmpleadoController extends Controller
                 );
                 return response()->json($response,404);
             }
-        }
-
+}
 
 }

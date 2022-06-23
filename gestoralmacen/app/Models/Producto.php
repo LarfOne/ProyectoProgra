@@ -9,7 +9,7 @@ class Producto extends Model
 {
     use HasFactory;
     protected $table='producto';
-    protected $fillable=['descripcion', 'precio'];
+    protected $fillable=['descripcion', 'precio', 'cantidad'];
 
     public function detallefactura(){ 
         return $this->hasMany('App\Models\DetalleFactura');

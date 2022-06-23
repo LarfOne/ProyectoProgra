@@ -11,8 +11,8 @@ class ProductoController extends Controller
     {
         // Inyectar meddleware
     }
+    
     //index -->devuelve todos los elementos  GET
-
     public function index(){
         $data=Producto::all(); //minuto 51
         $response=array(
@@ -52,7 +52,8 @@ class ProductoController extends Controller
         $data=array_map('trim',$data);
         $rules=[
             'descripcion'=>'required|alpha',
-            'precio'=>'required|numeric',  
+            'precio'=>'required|numeric',
+            'cantidad'=>'required|numeric'  
         ];
         
         $valid=\validator($data,$rules);
@@ -67,6 +68,7 @@ class ProductoController extends Controller
             $producto=new Producto();
             $producto->descripcion=$data['descripcion'];
             $producto->precio=$data['precio'];
+            $producto->cantidad=$data['cantidad'];
             $producto->save();
             $response=array(
                 'status'=>'success',
@@ -86,7 +88,7 @@ class ProductoController extends Controller
         $rules=[
             'descripcion'=> 'alpha',
             'precio'=>'numeric',
-               
+            'cantidad'=>'numeric',
         ];
         $valid=\validator($data,$rules);
         if($valid->fails()){
@@ -101,6 +103,7 @@ class ProductoController extends Controller
             unset($data['id']);
             unset($data['descripcion']);
             unset($data['precio']);
+            unset($data['cantidad']);
             
             $updated=User::where('id',$id)->update($data);
             if($updated>0){
