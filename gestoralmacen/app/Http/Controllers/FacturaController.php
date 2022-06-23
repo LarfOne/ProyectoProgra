@@ -70,8 +70,8 @@ class FacturaController extends Controller
             $factura->impuesto=$data['impuesto'];
             $factura->descuento=$data['descuento'];
             $factura->total=$data['total'];
-            $factura->idCliente=$data['cliente_id'];
-            $factura->idEmplado=$data['empleado_id'];
+            $factura->cliente_id=$data['cliente_id'];
+            $factura->empleado_id=$data['empleado_id'];
             $factura->save();
             $response=array(
                 'status'=>'success',
