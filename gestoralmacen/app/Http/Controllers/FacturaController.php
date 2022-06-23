@@ -66,6 +66,7 @@ class FacturaController extends Controller
             );
         }else{
             $factura=new Factura();
+            $factura->fechaFactura=$data['fechaFactura'];
             $factura->subtotal=$data['subtotal'];
             $factura->impuesto=$data['impuesto'];
             $factura->descuento=$data['descuento'];
