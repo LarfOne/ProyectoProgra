@@ -160,4 +160,25 @@ class FacturaController extends Controller
         }
         return response()->json($response,$response['code']);
     }
+
+
+    public function getUltimaFactura()
+    {
+        $factura = Factura::select('id')->orderBy('id', 'desc')->first();
+        if (is_object($factura)) {
+            $response = array(
+                'status' => 'success',
+                'code' => 200,
+                'data' => $factura
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'factura no encontrada'
+            );
+        }
+        return response()->json($response, $response['code']);
+    }
+
 }
