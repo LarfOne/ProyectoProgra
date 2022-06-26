@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetalleFactura;
+use App\Models\Factura;
 use Illuminate\Http\Request;
 
 
@@ -48,7 +49,7 @@ class DetalleFacturaController extends Controller
         if(!empty($data)){
             $data = array_map('trim',$data);//trim quita los espacios vacios que vengan en el arreglo
             $rules =[
-                'name'=>'required|alpha' //regla que sean letras el nombre ¿De que la pregunta hah?
+                'id'=>'required|numeric' //regla que sean letras el nombre ¿De que la pregunta hah?
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){
@@ -64,12 +65,12 @@ class DetalleFacturaController extends Controller
                 $detalleFactura->precioUnitario=$data['precioUnitario'];
                 $detalleFactura->descuento=$data['descuento'];
                 $detalleFactura->subTotal=$data['subTotal'];
-                $detalleFactura->idProduto=$data['idProducto'];
-                $detalleFactura->idFactura=$data['idFatura'];
+                $detalleFactura->producto_id=$data['producto_id'];
+                $detalleFactura->factura_id=$data['factura_id'];
                 $detalleFactura->save();
                 $response=array(
                     'status' => 'success',
-                    'code' => 201,
+                    'code' => 200,
                     'message'=>'Datos almacenados sastifacoriamente'
                 );
             }

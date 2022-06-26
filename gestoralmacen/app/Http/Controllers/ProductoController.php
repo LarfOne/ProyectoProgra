@@ -11,7 +11,7 @@ class ProductoController extends Controller
     {
         // Inyectar meddleware
     }
-    
+
     //index -->devuelve todos los elementos  GET
     public function index(){
         $data=Producto::all(); //minuto 51
@@ -25,7 +25,7 @@ class ProductoController extends Controller
 
     //show ->devuelve uno por su id GET
     public function show($id){
-        
+
         if(isset($id)){
             $data=Producto::where('id','=', $id)->get(); //->load('posts')//cargar lo que está asociado a este
             if(is_object($data)){
@@ -53,9 +53,9 @@ class ProductoController extends Controller
         $rules=[
             'descripcion'=>'required|alpha',
             'precio'=>'required|numeric',
-            'cantidad'=>'required|numeric'  
+            'cantidad'=>'required|numeric'
         ];
-        
+
         $valid=\validator($data,$rules);
         if($valid->fails()){
             $response=array(
@@ -104,8 +104,8 @@ class ProductoController extends Controller
             unset($data['descripcion']);
             unset($data['precio']);
             unset($data['cantidad']);
-            
-            $updated=User::where('id',$id)->update($data);
+
+            $updated=Producto::where('id',$id)->update($data);
             if($updated>0){
                 $response=array(
                     'status'=>'success',
@@ -149,4 +149,26 @@ class ProductoController extends Controller
         }
         return response()->json($response,$response['code']);
     }
+
+
+
+    public function getUltimoProducto()
+    {
+        $producto = Producto::select('id')->orderBy('id', 'desc')->first();
+        if (is_object($producto)) {
+            $response = array(
+                'status' => 'success',
+                'code' => 200,
+                'data' => $producto
+            );
+        } else {
+            $response = array(
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'producto no encontrado'
+            );
+        }
+        return response()->json($response, $response['code']);
+    }
+
 }

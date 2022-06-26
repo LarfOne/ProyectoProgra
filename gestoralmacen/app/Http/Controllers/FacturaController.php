@@ -21,7 +21,7 @@ class FacturaController extends Controller
         return response()->json($response,200);
     }
     //show ->devuelve uno por su id GET
-    public function show($id){   
+    public function show($id){
         if(isset($id)){
             $data=Factura::find($id)->load('empleado', 'cliente', 'detalleFactura');
             if(is_object($data)){
@@ -39,11 +39,11 @@ class FacturaController extends Controller
             );
         }
             return response()->json($response,$response['code']);
-        
+
     }
-   
+
     //store -> agrega o guarda un elemento POST
-    public function store(Request $request) { 
+    public function store(Request $request) {
         $json=$request->input('json',null);
         $data=json_decode($json,true);
         $data=array_map('trim',$data);
@@ -53,9 +53,9 @@ class FacturaController extends Controller
             'descuento'=>'numeric',
             'total'=>'numeric',
             'cliente_id'=>'required',
-            'empleado_id'=>'required'    
+            'empleado_id'=>'required'
         ];
-        
+
         $valid=\validator($data,$rules);
         if($valid->fails()){
             $response=array(
@@ -66,7 +66,6 @@ class FacturaController extends Controller
             );
         }else{
             $factura=new Factura();
-            $factura->fechaFactura=$data['fechaFactura'];
             $factura->subtotal=$data['subtotal'];
             $factura->impuesto=$data['impuesto'];
             $factura->descuento=$data['descuento'];
@@ -96,7 +95,7 @@ class FacturaController extends Controller
             'descuento'=>'numeric',
             'total'=>'numeric',
             'cliente_id'=>'numeric',
-            'empleado_id'=>'numeric'    
+            'empleado_id'=>'numeric'
         ];
         $valid=\validator($data,$rules);
         if($valid->fails()){
@@ -113,7 +112,7 @@ class FacturaController extends Controller
             unset($data['empleado_id']);
             unset($data['created_at']);
             unset($data['updated_at']);
-            $updated=User::where('id',$id)->update($data);
+            $updated=Factura::where('id',$id)->update($data);
             if($updated>0){
                 $response=array(
                     'status'=>'success',

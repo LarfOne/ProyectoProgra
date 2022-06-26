@@ -13,6 +13,7 @@ Route::prefix('api')->group(function () {
     Route::post('/empleado/login',[EmpleadoController::class,'login']);
     Route::get('/empleado/getidentity',[EmpleadoController::class,'getIdentity']);
     Route::get('/factura/getultimafactura', [FacturaController::class, 'getUltimaFactura']);
+    Route::get('/producto/getultimoproducto', [ProductoController::class, 'getUltimoProducto']);
     Route::post('/empleado/upload',[EmpleadoController::class,'uploadImage']);
     Route::get('/empleado/getimage/{filename}',[EmpleadoController::class,'getImage']);
     //RUTAS AUTOMATICAS RESTful
