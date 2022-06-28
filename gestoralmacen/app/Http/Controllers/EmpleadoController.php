@@ -151,6 +151,7 @@ class EmpleadoController extends Controller
                 $id=$data['id'];
                 unset($data['id']);        //Unset: atributos que no se modifican
                 unset($data['created_at']);
+                unset($data['contrasena']);
                 $updated=Empleado::where('id',$id)->update($data);
                 if($updated>0){
                     $response=array(

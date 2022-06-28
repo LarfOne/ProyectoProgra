@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Log;
+
 
 use App\Models\DetalleFactura;
 use App\Models\Factura;
@@ -48,6 +50,7 @@ class DetalleFacturaController extends Controller
         $data=json_decode($json,true);
         if(!empty($data)){
             $data = array_map('trim',$data);//trim quita los espacios vacios que vengan en el arreglo
+            Log::info($data);
             $rules =[
                 'id'=>'required|numeric' //regla que sean letras el nombre ¿De que la pregunta hah?
             ];

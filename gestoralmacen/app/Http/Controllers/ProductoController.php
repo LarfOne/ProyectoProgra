@@ -155,20 +155,23 @@ class ProductoController extends Controller
     public function getUltimoProducto()
     {
         $producto = Producto::select('id')->orderBy('id', 'desc')->first();
-        if (is_object($producto)) {
-            $response = array(
-                'status' => 'success',
-                'code' => 200,
-                'data' => $producto
-            );
-        } else {
-            $response = array(
-                'status' => 'error',
-                'code' => 404,
-                'message' => 'producto no encontrado'
+        if(isset($producto)){
+            $data=Producto::find($producto);
+            if(is_object($data)){
+                $response=array(
+                    'status'=>'success',
+                    'code'=>200,
+                    'data'=>$data
+                );
+            }
+        }else{
+            $response=array(
+                'status'=>'error',
+                'code'=>404,
+                'message'=>'Recurso no encontrado'
             );
         }
-        return response()->json($response, $response['code']);
+            return response()->json($response,$response['code']);
     }
 
 }

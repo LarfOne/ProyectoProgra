@@ -20,6 +20,29 @@ class FacturaController extends Controller
         );
         return response()->json($response,200);
     }
+
+
+    public function devolverUltima(){
+        $factura = Factura::select('id')->orderBy('id', 'desc')->first();
+        if(isset($factura)){
+            $data=Factura::find($factura);
+            if(is_object($data)){
+                $response=array(
+                    'status'=>'success',
+                    'code'=>200,
+                    'data'=>$data
+                );
+            }
+        }else{
+            $response=array(
+                'status'=>'error',
+                'code'=>404,
+                'message'=>'Recurso no encontrado'
+            );
+        }
+            return response()->json($response,$response['code']);
+    }
+
     //show ->devuelve uno por su id GET
     public function show($id){
         if(isset($id)){
@@ -161,6 +184,7 @@ class FacturaController extends Controller
         return response()->json($response,$response['code']);
     }
 
+    /*
 
     public function getUltimaFactura()
     {
@@ -179,6 +203,6 @@ class FacturaController extends Controller
             );
         }
         return response()->json($response, $response['code']);
-    }
+    }*/
 
 }

@@ -12,7 +12,7 @@ Route::prefix('api')->group(function () {
     //RUTAS ESPECIFICAS imagenes
     Route::post('/empleado/login',[EmpleadoController::class,'login']);
     Route::get('/empleado/getidentity',[EmpleadoController::class,'getIdentity']);
-    Route::get('/factura/getultimafactura', [FacturaController::class, 'getUltimaFactura']);
+    Route::get('/factura/getultima', [FacturaController::class, 'devolverUltima']);
     Route::get('/producto/getultimoproducto', [ProductoController::class, 'getUltimoProducto']);
     Route::post('/empleado/upload',[EmpleadoController::class,'uploadImage']);
     Route::get('/empleado/getimage/{filename}',[EmpleadoController::class,'getImage']);
