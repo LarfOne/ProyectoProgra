@@ -135,8 +135,7 @@ class EmpleadoController extends Controller
                 'apellido1'=>'alpha',
                 'apellido2'=>'alpha',
                 'telefono'=>'numeric',
-                'email'=>'email',
-                'role'=>'alpha'
+                'email'=>'email'
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){
@@ -152,6 +151,7 @@ class EmpleadoController extends Controller
                 unset($data['id']);        //Unset: atributos que no se modifican
                 unset($data['created_at']);
                 unset($data['contrasena']);
+                unset($data['role']);
                 $updated=Empleado::where('id',$id)->update($data);
                 if($updated>0){
                     $response=array(
