@@ -71,9 +71,7 @@ class FacturaController extends Controller
         $data=json_decode($json,true);
         $data=array_map('trim',$data);
         $rules=[
-            'impuesto'=> 'numeric',
             'subtotal'=>'required|numeric',
-            'descuento'=>'numeric',
             'total'=>'numeric',
             'cliente_id'=>'required',
             'empleado_id'=>'required'
@@ -90,8 +88,6 @@ class FacturaController extends Controller
         }else{
             $factura=new Factura();
             $factura->subtotal=$data['subtotal'];
-            $factura->impuesto=$data['impuesto'];
-            $factura->descuento=$data['descuento'];
             $factura->total=$data['total'];
             $factura->cliente_id=$data['cliente_id'];
             $factura->empleado_id=$data['empleado_id'];
@@ -108,48 +104,52 @@ class FacturaController extends Controller
 
     //update -> modifica un elemento PUT
     public function update(Request $request){
-        $json=$request->input('json',null,true);
+        $json=$request->input('json',null);
         $data=json_decode($json,true);
-        //Error a solucionar tarea profe
-        $data=array_map('trim',$data);
-        $rules=[
-            'impuesto'=> 'numeric',
-            'subtotal'=>'numeric',
-            'descuento'=>'numeric',
-            'total'=>'numeric',
-            'cliente_id'=>'numeric',
-            'empleado_id'=>'numeric'
-        ];
-        $valid=\validator($data,$rules);
-        if($valid->fails()){
-            $response=array(
-                'status'=>'error',
-                'code'=>406,
-                'message'=>'Datos enviados no cumplen con las reglas establecidas',
-                'errors'=>$valid->errors()
-            );
-        }else{                    //ignorar
-            $id=$data['id'];   // valor a validar con base de datos
-            unset($data['id']);
-            unset($data['cliente_id']);
-            unset($data['empleado_id']);
-            unset($data['created_at']);
-            unset($data['updated_at']);
-            $updated=Factura::where('id',$id)->update($data);
-            if($updated>0){
-                $response=array(
-                    'status'=>'success',
-                    'code'=>200,
-                    'message'=>'Datos actualizados satisfactoriamente'
-                );
-            }else{
+        if(!empty($data)){
+            $data=array_map('trim',$data);
+            $rules=[
+                'subtotal'=>'numeric',
+                'total'=>'numeric'
+            ];
+            $valid=\validator($data,$rules);
+            if($valid->fails()){
                 $response=array(
                     'status'=>'error',
-                    'code'=>400,
-                    'message'=>'No se pudo actualizar el usuario, puede ser que no exista'
+                    'code'=>406,
+                    'message'=>'Datos enviados no cumplen con las reglas establecidas',
+                    'errors'=>$valid->errors()
                 );
+            }else{
+                $id=$data['id'];
+                unset($data['id']);
+                unset($data['cliente_id']);
+                unset($data['empleado_id']);
+              //  unset($data['created_at']);
+               // unset($data['updated_at']);
+                $updated=Factura::where('id',$id)->update($data);
+                if($updated>0){
+                    $response=array(
+                        'status'=>'success',
+                        'code'=>200,
+                        'message'=>'Datos actualizados satisfactoriamente'
+                    );
+                }else{
+                    $response=array(
+                        'status'=>'error',
+                        'code'=>400,
+                        'message'=>'No se pudo actualizar el usuario, puede ser que no exista'
+                    );
+                }
             }
+        }else{
+            $response = array(
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Faltan parametros'
+            );
         }
+
         return response()->json($response,$response['code']);
     }
 
@@ -159,7 +159,7 @@ class FacturaController extends Controller
 
     //destroy -> elimina un elemento DELETE
     public function destroy($id){
-        if(isset($id)){ //isset esta la varible creada?
+        if(isset($id)){ 
             $deleted = Factura::where('id',$id)->delete();
             if($deleted){
                 $response=array(

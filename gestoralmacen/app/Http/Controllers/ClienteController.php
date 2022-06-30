@@ -48,9 +48,9 @@ class ClienteController extends Controller
 
     //store --> agrega o guarda un elemnto  POST
     public function store(Request $request){   //PENDIENTE CAPTURA DE ERROR AL EENVIAR EL MISMO USUARIO O ENVIAR NADA
-        $json=$request->input('json',null,true);
+        $json=$request->input('json',null);
         $data=json_decode($json,true);
-        var_dump($json);//perimte ver internamente en postman el arreglo que estoy enviando
+        //var_dump($json);//perimte ver internamente en postman el arreglo que estoy enviando
         $data=array_map('trim',$data);
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
             'id'=>'required|unique:cliente',

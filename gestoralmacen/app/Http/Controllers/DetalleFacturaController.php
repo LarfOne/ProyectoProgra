@@ -46,11 +46,11 @@ class DetalleFacturaController extends Controller
 
     //store -> agrega o guarda un elemento POST
     public function store(Request $request) { //*****************Pendiente**************/
-        $json = $request->input('json',null,true);
+        $json = $request->input('json',null);
         $data=json_decode($json,true);
         if(!empty($data)){
             $data = array_map('trim',$data);//trim quita los espacios vacios que vengan en el arreglo
-            Log::info($data);
+        Log::info($data);
             $rules =[
                 'id'=>'required|numeric' //regla que sean letras el nombre ¿De que la pregunta hah?
             ];
@@ -66,7 +66,6 @@ class DetalleFacturaController extends Controller
                 $detalleFactura = new detalleFactura();
                 $detalleFactura->cantidad=$data['cantidad'];
                 $detalleFactura->precioUnitario=$data['precioUnitario'];
-                $detalleFactura->descuento=$data['descuento'];
                 $detalleFactura->subTotal=$data['subTotal'];
                 $detalleFactura->producto_id=$data['producto_id'];
                 $detalleFactura->factura_id=$data['factura_id'];
@@ -95,17 +94,16 @@ class DetalleFacturaController extends Controller
 
     //update -> modifica un elemento PUT
     public function update(Request $request){
-        $json=$request->input('json',null,true);
+        $json=$request->input('json',null);
         $data=json_decode($json,true);
         if(!empty($data)){
             $data=array_map('trim',$data);
             $rules=[      //***************************PENDIENTES MAS REGLAS PARA CAMBIOS */
-                'cantidad'=> 'numeric|required',
+            /*    'cantidad'=> 'numeric|required',
                 'precioUnitario'=>'required|numeric',
-                'descuento'=>'numeric',
                 'subtotal'=>'required|numeric',
                 'idProducto'=>'required',
-                'idFactura'=>'required'
+                'idFactura'=>'required' */
             ];
             $validate=\validator($data,$rules);
             if($validate->fails()){

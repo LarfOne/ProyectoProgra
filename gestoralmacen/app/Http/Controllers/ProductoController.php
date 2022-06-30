@@ -27,7 +27,7 @@ class ProductoController extends Controller
     public function show($id){
 
         if(isset($id)){
-            $data=Producto::where('id','=', $id)->get(); //->load('posts')//cargar lo que está asociado a este
+            $data=Producto::where('id','=', $id)->get();
             if(is_object($data)){
                 $response=array(
                     'status'=>'success',
@@ -46,12 +46,12 @@ class ProductoController extends Controller
     }
 
     //store -> agrega o guarda un elemento POST
-    public function store(Request $request) { //*****************Pendiente**************/
+    public function store(Request $request) {
         $json=$request->input('json',null);
         $data=json_decode($json,true);
         $data=array_map('trim',$data);
         $rules=[
-            'descripcion'=>'required|alpha',
+            'descripcion'=>'required',
             'precio'=>'required|numeric',
             'cantidad'=>'required|numeric'
         ];
@@ -81,7 +81,7 @@ class ProductoController extends Controller
 
     //update -> modifica un elemento PUT
     public function update(Request $request){
-        $json=$request->input('json',null,true);
+        $json=$request->input('json',null);
         $data=json_decode($json,true);
         //Error a solucionar tarea profe
         $data=array_map('trim',$data);
