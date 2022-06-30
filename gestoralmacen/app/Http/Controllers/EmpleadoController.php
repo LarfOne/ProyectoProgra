@@ -80,7 +80,7 @@ class EmpleadoController extends Controller
         $data=array_map('trim',$data);
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
             'id'=>'required|numeric|unique:empleado',
-            'nombre'=>'required|alpha',
+            'nombre'=>'required',
             'apellido1'=>'required|alpha',
             'apellido2'=>'required|alpha',
             'role'=>'required|alpha',

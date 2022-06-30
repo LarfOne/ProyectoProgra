@@ -54,8 +54,8 @@ class ClienteController extends Controller
         $data=array_map('trim',$data);
         $rules=[  //EN PROYECTO AGREGAR ID NO ES AUTOINCREMENTBLE
             'id'=>'required|unique:cliente',
-            'nombre'=>'required|alpha',
-            'apellido'=>'required|alpha',
+            'nombre'=>'required',
+            'apellido'=>'required',
             'telefono'=>'numeric|unique:cliente',//no tienen requirido por que aveces los clientes no quieren dejar sus datos
             'email'=>'email|unique:cliente'
         ];
@@ -93,8 +93,6 @@ class ClienteController extends Controller
         if(!empty($data)){
             $data=array_map('trim',$data);
             $rules=[
-            'nombre'=>'alpha',
-            'apellido'=>'alpha',
             'telefono'=>'numeric|unique:cliente',//no tienen requirido por que aveces los clientes no quieren dejar sus datos
             'email'=>'email|unique:cliente'
             ];
